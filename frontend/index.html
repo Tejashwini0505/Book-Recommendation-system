@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stacks — Book Recommendation Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="desk">
+    <header class="desk-header">
+      <div class="stamp">STACKS</div>
+      <div class="header-text">
+        <h1>The Reference Desk</h1>
+        <p>Tell the librarian what you're in the mood for.</p>
+      </div>
+    </header>
+
+    <div class="ledger" id="ledger">
+      <div class="entry bot">
+        <div class="entry-label">LIBRARIAN</div>
+        <div class="entry-body">
+          Evening. Ask me for books "like <em>a title you love</em>", request a genre
+          — "recommend fantasy books" — or just describe what you're after.
+        </div>
+      </div>
+    </div>
+
+    <form class="request-slip" id="chat-form">
+      <input
+        type="text"
+        id="chat-input"
+        placeholder="e.g. recommend books like Dune"
+        autocomplete="off"
+        required
+      />
+      <button type="submit" id="send-btn">Submit slip</button>
+    </form>
+
+    <div class="status-line" id="status-line"></div>
+  </div>
+
+  <script src="js/chatbot.js"></script>
+</body>
+</html>
