@@ -1,115 +1,282 @@
-# Book Recommendation Chatbot
+# 📚 Book Recommendation Chatbot
 
-TensorFlow content-based recommendation engine + Node.js/Express + MySQL backend,
-served to an HTML/CSS/JS chatbot frontend, all connected via REST APIs.
+An AI-powered Book Recommendation Chatbot that provides personalized book suggestions using Machine Learning and Natural Language Processing. The system combines a TensorFlow-based recommendation engine with a Node.js backend and MySQL database to deliver real-time recommendations through a user-friendly web interface.
 
-## Folder structure
+## 🚀 Features
 
-```
+- Personalized book recommendations
+- AI-powered recommendation engine using TensorFlow
+- REST API integration between ML service and backend
+- User preference management
+- Chat-style recommendation interface
+- MySQL database integration
+- Responsive web interface
+- Real-time recommendation generation
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- HTML5
+- CSS3
+- JavaScript
+
+### Backend
+- Node.js
+- Express.js
+- REST APIs
+
+### Machine Learning
+- Python
+- TensorFlow
+- Scikit-Learn
+- Flask
+
+### Database
+- MySQL
+
+---
+
+## 📂 Project Structure
+
+```text
 book-recommendation-chatbot/
-├── ml-model/                    # Python / TensorFlow
-│   ├── data/
-│   │   └── books.csv            # <-- put the Kaggle CSV here
-│   ├── model/                   # created automatically by train_model.py
-│   ├── train_model.py           # trains the embedding model
-│   ├── app.py                   # Flask REST API that serves recommendations
-│   └── requirements.txt
-├── backend/                     # Node.js / Express / MySQL
-│   ├── config/db.js
-│   ├── controllers/recommendationController.js
-│   ├── routes/recommendations.js
-│   ├── database/schema.sql
-│   ├── server.js
-│   ├── package.json
-│   └── .env
-├── frontend/                    # HTML / CSS / JS chatbot UI
+│
+├── frontend/
 │   ├── index.html
-│   ├── css/style.css
-│   └── js/chatbot.js
+│   ├── style.css
+│   └── script.js
+│
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── routes/
+│   ├── database/
+│   │   └── schema.sql
+│   ├── .env
+│   ├── package.json
+│   └── server.js
+│
+├── ml-model/
+│   ├── data/
+│   ├── model/
+│   ├── train_model.py
+│   ├── app.py
+│   └── requirements.txt
+│
 └── README.md
 ```
 
-## 1. Get the dataset (Kaggle)
+---
 
-Download **"7k Books with Metadata"**:
+## 📊 Dataset
+
+Dataset used:
+
+**7K Books with Metadata**
+
+Source:
 https://www.kaggle.com/datasets/dylanjcastillo/7k-books-with-metadata
 
-Save the CSV as:
-```
-ml-model/data/books.csv
+The dataset contains:
+- Book titles
+- Authors
+- Genres
+- Ratings
+- Descriptions
+- Metadata
+
+---
+
+## ⚙️ Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/Tejashwini0505/Book-Recommendation-system.git
+cd Book-Recommendation-system
 ```
 
-(Any similarly-structured Kaggle book dataset with title/author/genre/description
-columns will work — `train_model.py` normalizes common column-name variants.)
+---
 
-## 2. Train the TensorFlow model
+## 🧠 Machine Learning Setup
+
+Navigate to ML folder:
 
 ```bash
 cd ml-model
-python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # Mac/Linux
+```
+
+Create virtual environment:
+
+```bash
+py -3.12 -m venv venv
+```
+
+Activate environment:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
+
+Train model:
+
+```bash
 python train_model.py
 ```
 
-This trains a TF autoencoder on TF-IDF text features (description + genre + author),
-saves book embeddings, and prints an accuracy metric (genre-separation proxy) so
-you have a real, reproducible number to quote instead of a guessed one.
-
-## 3. Start the Flask ML service (REST API #1)
+Start Flask API:
 
 ```bash
 python app.py
 ```
-Runs on `http://localhost:5001`. Test it:
-```bash
-curl http://localhost:5001/health
+
+ML Service runs on:
+
+```text
+http://localhost:5001
 ```
 
-## 4. Set up MySQL
+---
 
-```bash
-mysql -u root -p < backend/database/schema.sql
+## 🗄️ Database Setup
+
+Start MySQL Server.
+
+Create database:
+
+```sql
+CREATE DATABASE bookdb;
 ```
-Then edit `backend/.env` with your real MySQL password.
 
-## 5. Start the Express backend (REST API #2)
+Import schema:
+
+```sql
+USE bookdb;
+SOURCE schema.sql;
+```
+
+Tables:
+- users
+- books
+- user_preferences
+- chat_history
+
+---
+
+## 🔧 Backend Setup
+
+Navigate to backend:
 
 ```bash
 cd backend
+```
+
+Install dependencies:
+
+```bash
 npm install
-npm run dev      # or: npm start
-```
-Runs on `http://localhost:5000` and also serves the frontend at that same URL.
-
-## 6. Open the chatbot
-
-Visit **http://localhost:5000** in your browser (Express serves `frontend/` statically),
-or open `frontend/index.html` directly with VS Code's Live Server extension.
-
-Try messages like:
-- `recommend books like Dune`
-- `recommend fantasy books`
-- `I like slow-paced literary fiction about family`
-
-## How the pieces connect
-
-```
-Browser (HTML/CSS/JS)
-      │  fetch()
-      ▼
-Express (Node.js, port 5000) ── MySQL (chat history, users, preferences)
-      │  axios REST call
-      ▼
-Flask (Python, port 5001) ── TensorFlow model + embeddings
 ```
 
-## Notes for your 2-hour build
+Configure `.env`
 
-- If you're short on time, skip retraining and just run `train_model.py` once —
-  the saved artifacts in `ml-model/model/` are reused by `app.py` on every restart.
-- `metrics.json` (written by `train_model.py`) holds the accuracy number you can
-  reference in your resume/README instead of a placeholder "90%".
-- The chatbot's intent parser in `recommendationController.js` is intentionally
-  simple (keyword-based) so it's easy to extend during a demo.
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=bookdb
+PORT=5000
+```
+
+Run backend:
+
+```bash
+node server.js
+```
+
+Backend runs on:
+
+```text
+http://localhost:5000
+```
+
+---
+
+## 🎨 Frontend Setup
+
+Open frontend folder:
+
+```bash
+cd frontend
+```
+
+Run using VS Code Live Server or open:
+
+```text
+index.html
+```
+
+---
+
+## 🔄 System Architecture
+
+```text
+Frontend (HTML/CSS/JS)
+           │
+           ▼
+Node.js + Express Backend
+           │
+           ▼
+Flask ML API
+           │
+           ▼
+TensorFlow Recommendation Model
+           │
+           ▼
+MySQL Database
+```
+
+---
+
+## 📈 Project Highlights
+
+- Trained recommendation engine using 6,000+ book records.
+- Built RESTful APIs for recommendation generation.
+- Integrated TensorFlow model with Node.js backend.
+- Implemented database-driven user preference tracking.
+- Developed a responsive chatbot-style user interface.
+- Enabled real-time personalized recommendations.
+
+---
+
+## 📸 Future Enhancements
+
+- User authentication and login
+- Collaborative filtering
+- Deep learning recommendation models
+- Book review analysis
+- Recommendation history dashboard
+- Deployment on AWS/Render
+
+---
+
+## 👩‍💻 Author
+
+**Tejashwini S**
+
+Computer Science Engineering Student
+
+GitHub:
+https://github.com/Tejashwini0505
+
+LinkedIn:
+(Add your LinkedIn profile URL)
+
+---
